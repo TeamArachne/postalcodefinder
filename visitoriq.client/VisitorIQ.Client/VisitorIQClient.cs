@@ -54,21 +54,35 @@
                     {
                         response.EnsureSuccessStatusCode();
 
-                        XElement result = XElement.Parse(await response.Content.ReadAsStringAsync());
+                        string xml = await response.Content.ReadAsStringAsync();
 
-                        XElement root = result.Element("response");
-                        XElement segmentMember = root.Element("segment_member");
+                        XElement root = XElement.Parse(xml).Element("response");
+                        XElement segment = root.Element("segment_member");
 
-                        return new IPLookup()
+                        if (string.Equals(segment.Value, "NoMatch", StringComparison.Ordinal))
+                        {
+                            return null;
+                        }
+
+                        var result2 = new IPLookup()
                         {
                             IPAddress = root.Element("ip_address").Value,
-                            Latitude = double.Parse(segmentMember.Element("post_lati").Value) / 1000000,
-                            Longitude = double.Parse(segmentMember.Element("post_long").Value) / 1000000,
-                            City = segmentMember.Element("city").Value,
-                            RegionCode = segmentMember.Element("state").Value,
-                            PostalCode = segmentMember.Element("postal_code").Value,
-                            CountryCode = segmentMember.Element("country_code").Value,
+                            City = segment.Element("city").Value,
+                            RegionCode = segment.Element("state").Value,
+                            PostalCode = segment.Element("postal_code").Value,
+                            CountryCode = segment.Element("country_code").Value,
                         };
+
+                        var latitude = segment.Element("post_lati");
+                        var longitude = segment.Element("post_long");
+
+                        if (latitude != null && longitude != null)
+                        {
+                            result2.Latitude = double.Parse(latitude.Value) / 1000000;
+                            result2.Longitude = double.Parse(longitude.Value) / 1000000;
+                        }
+
+                        return result2;
                     }
                 }
             }
