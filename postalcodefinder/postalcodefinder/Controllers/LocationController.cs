@@ -29,7 +29,7 @@
 
             if (value.Coordinates != null)
             {
-                if (value.Coordinates.Latitude > 90.0 || value.Coordinates.Longitude < -90.0)
+                if (value.Coordinates.Latitude > 90.0 || value.Coordinates.Latitude < -90.0)
                 {
                     return BadRequest("Invalid latitude specified.");
                 }
