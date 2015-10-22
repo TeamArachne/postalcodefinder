@@ -34,7 +34,7 @@
                     return BadRequest("Invalid longitude specified.");
                 }
 
-                response = LookupByCoordinates(value.Coordinates);
+                response = await LookupByCoordinatesAsync(value.Coordinates);
             }
             else if (value.Timestamp.HasValue)
             {
@@ -48,24 +48,32 @@
             return Ok(response);
         }
 
-        private static LocationReponse LookupByCoordinates(LocationRequest.LocationCoordinates coordinates)
+        private static async Task<LocationReponse> LookupByCoordinatesAsync(LocationRequest.LocationCoordinates coordinates)
         {
-            // TODO Do proper lookup by latitude and longitude
             string country = string.Empty;
             string region = string.Empty;
             string postalCode = string.Empty;
+            string city = string.Empty;
 
-            if (coordinates.Latitude > 48.0 && coordinates.Latitude < 59.0 &&
-                coordinates.Longitude > -5.0 && coordinates.Longitude < 2.0)
+            var client = new Google.Geocoding.Client.GeocodingClient()
             {
-                country = "GB";
-                region = "ENG";
-                postalCode = "SW11";
+                ApiKey = ConfigurationManager.AppSettings["Google_ApiKey"],
+            };
+
+            var lookup = await client.LookupAsync(coordinates.Latitude, coordinates.Longitude);
+
+            if (lookup != null)
+            {
+                city = lookup.City;
+                country = lookup.CountryCode;
+                region = lookup.RegionCode;
+                postalCode = lookup.PostalCode;
             }
 
             return new LocationReponse()
             {
                 DerivationMethod = "coordinates",
+                City = city,
                 Country = country,
                 PostalCode = postalCode,
                 Region = region,
@@ -101,6 +109,7 @@
             return new LocationReponse()
             {
                 DerivationMethod = "ipAddress",
+                City = string.Empty,
                 Country = string.Empty,
                 PostalCode = string.Empty,
                 Region = string.Empty,
@@ -128,6 +137,7 @@
                     return new LocationReponse()
                     {
                         DerivationMethod = "ipAddress",
+                        City = location.City,
                         Country = location.CountryCode,
                         PostalCode = location.PostalCode,
                         Region = location.RegionCode,
@@ -144,6 +154,7 @@
                     return new LocationReponse()
                     {
                         DerivationMethod = "ipAddress",
+                        City = location.City,
                         Country = location.CountryCode,
                         PostalCode = location.PostalCode,
                         Region = location.RegionCode,
@@ -159,35 +170,41 @@
             string country = "GB";
             string region = "ENG";
             string postalCode = "SW11";
+            string city = string.Empty;
 
             if (value.Offset == TimeSpan.FromHours(-5))
             {
                 country = "US";
                 region = "NY";
                 postalCode = "10547";
+                city = "Mohegan Lake";
             }
             else if (value.Offset == TimeSpan.FromHours(-6))
             {
                 country = "US";
                 region = "TX";
                 postalCode = "75155";
+                city = "Rice";
             }
             else if (value.Offset == TimeSpan.FromHours(-7))
             {
                 country = "US";
                 region = "CO";
                 postalCode = "80208";
+                city = "Denver";
             }
             else if (value.Offset == TimeSpan.FromHours(-8))
             {
                 country = "US";
                 region = "WA";
                 postalCode = "98009";
+                city = "Bellevue";
             }
 
             return new LocationReponse()
             {
                 DerivationMethod = "timestamp",
+                City = city,
                 Country = country,
                 PostalCode = postalCode,
                 Region = region,
