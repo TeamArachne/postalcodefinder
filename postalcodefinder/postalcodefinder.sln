@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8E184BEE
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreeGeoIP.Client", "..\freegeoip.client\FreeGeoIP.Client\FreeGeoIP.Client.csproj", "{9E5EEFBA-992B-422E-A919-1C7C2EFCD63C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisitorIQ.Client", "..\visitoriq.client\VisitorIQ.Client\VisitorIQ.Client.csproj", "{F059C3B6-7505-491B-BFEE-40DAF56F7758}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{9E5EEFBA-992B-422E-A919-1C7C2EFCD63C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E5EEFBA-992B-422E-A919-1C7C2EFCD63C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E5EEFBA-992B-422E-A919-1C7C2EFCD63C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F059C3B6-7505-491B-BFEE-40DAF56F7758}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F059C3B6-7505-491B-BFEE-40DAF56F7758}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F059C3B6-7505-491B-BFEE-40DAF56F7758}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F059C3B6-7505-491B-BFEE-40DAF56F7758}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
