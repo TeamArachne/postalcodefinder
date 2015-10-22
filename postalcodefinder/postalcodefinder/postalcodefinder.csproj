@@ -185,6 +185,8 @@
     </Compile>
     <Compile Include="Jobs\LoadDataIntoTableStorage.cs" />
     <Compile Include="Jobs\PostalCodeEntity.cs" />
+    <Compile Include="Models\LocationReponse.cs" />
+    <Compile Include="Models\LocationRequest.cs" />
     <Compile Include="PcfGlobal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

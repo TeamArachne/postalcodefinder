@@ -1,46 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Web.Http;
-using System.Web.Mvc;
+using Newtonsoft.Json;
+using postalcodefinder.Models;
 
 namespace postalcodefinder.Controllers
 {
     public class ValuesController : ApiController
     {
-        // GET api/values
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET api/values/5
-        public string Get(int id)
-        {
-            return "value";
-        }
-
         // POST api/values
-        public object Post([FromBody]string value)
+        public IHttpActionResult Post([FromBody][Required]LocationRequest value)
         {
-            return new
+            if (value == null)
             {
-                iso = "GB",
-                postalCode = "SW11",
-                method = "Coords"
+                return BadRequest("No request body specified.");
+            }
+
+            if (value.Coordinates == null && value.Timestamp == null)
+            {
+                return BadRequest("No time or coordinates specified.");
+            }
+
+            string derivationMethod;
+
+            if (value.Coordinates != null)
+            {
+                derivationMethod = "coordinates";
+            }
+            else
+            {
+                derivationMethod = "timestamp";
+            }
+
+            // TODO Actually implement something
+            LocationReponse response = new LocationReponse()
+            {
+                DerivationMethod = derivationMethod,
+                Country = "GB",
+                PostalCode = "SW11",
             };
-        }
 
-        // PUT api/values/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/values/5
-        public void Delete(int id)
-        {
+            return Ok(response);
         }
     }
 }
