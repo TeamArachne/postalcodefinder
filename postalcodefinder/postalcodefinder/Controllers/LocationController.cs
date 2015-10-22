@@ -8,8 +8,9 @@
     using System.Web;
     using System.Web.Http;
     using FreeGeoIP.Client;
+    using Models;
     using Newtonsoft.Json;
-    using postalcodefinder.Models;
+    using VisitorIQ.Client;
 
     public class LocationController : ApiController
     {
@@ -87,30 +88,70 @@
                 clientIPAddress = HttpContext.Current.Request.UserHostAddress;
             }
 
-            string country = string.Empty;
-            string region = string.Empty;
-            string postalCode = string.Empty;
-
             if (!string.IsNullOrEmpty(clientIPAddress))
             {
-                var client = new FreeGeoIPClient();
-                var location = await client.LookupAsync(clientIPAddress);
+                var location = await LookupByIPAddressAsync(clientIPAddress);
 
                 if (location != null)
                 {
-                    country = location.CountryCode;
-                    region = location.RegionCode;
-                    postalCode = location.PostalCode;
+                    return location;
                 }
             }
 
             return new LocationReponse()
             {
                 DerivationMethod = "ipAddress",
-                Country = country,
-                PostalCode = postalCode,
-                Region = region,
+                Country = string.Empty,
+                PostalCode = string.Empty,
+                Region = string.Empty,
             };
+        }
+
+        private static async Task<LocationReponse> LookupByIPAddressAsync(string hostNameOrIPAddress)
+        {
+            LocationReponse result = null;
+
+            if (string.Equals(ConfigurationManager.AppSettings["VisitorIQ_Enabled"], bool.TrueString, StringComparison.OrdinalIgnoreCase) &&
+                !string.IsNullOrEmpty(ConfigurationManager.AppSettings["VisitorIQ_ClientId"]) &&
+                !string.IsNullOrEmpty(ConfigurationManager.AppSettings["VisitorIQ_HostName"]))
+            {
+                var client = new VisitorIQClient()
+                {
+                    ClientId = ConfigurationManager.AppSettings["VisitorIQ_ClientId"],
+                    HostName = ConfigurationManager.AppSettings["VisitorIQ_HostName"],
+                };
+
+                var location = await client.LookupAsync(hostNameOrIPAddress);
+
+                if (location != null)
+                {
+                    return new LocationReponse()
+                    {
+                        DerivationMethod = "ipAddress",
+                        Country = location.CountryCode,
+                        PostalCode = location.PostalCode,
+                        Region = location.RegionCode,
+                    };
+                }
+            }
+            else
+            {
+                var client = new FreeGeoIPClient();
+                var location = await client.LookupAsync(hostNameOrIPAddress);
+
+                if (location != null)
+                {
+                    return new LocationReponse()
+                    {
+                        DerivationMethod = "ipAddress",
+                        Country = location.CountryCode,
+                        PostalCode = location.PostalCode,
+                        Region = location.RegionCode,
+                    };
+                }
+            }
+
+            return result;
         }
 
         private static LocationReponse LookupByTimestamp(DateTimeOffset value)
