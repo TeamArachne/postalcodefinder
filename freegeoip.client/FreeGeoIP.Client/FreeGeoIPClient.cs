@@ -2,6 +2,7 @@
 {
     using System;
     using System.Globalization;
+    using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
 
@@ -28,6 +29,11 @@
             {
                 using (var response = await client.GetAsync(requestUri))
                 {
+                    if (response.StatusCode == HttpStatusCode.NotFound)
+                    {
+                        return null;
+                    }
+
                     response.EnsureSuccessStatusCode();
                     return await response.Content.ReadAsAsync<IPLookup>();
                 }
