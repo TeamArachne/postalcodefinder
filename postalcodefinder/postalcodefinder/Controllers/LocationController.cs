@@ -3,6 +3,8 @@
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.Configuration;
+    using System.Data.SqlClient;
+    using System.Globalization;
     using System.Net.Http;
     using System.Threading.Tasks;
     using System.Web;
@@ -27,7 +29,7 @@
 
             if (value.Coordinates != null)
             {
-                if (value.Coordinates.Latitude > 90.0 || value.Coordinates.Longitude < -90.0)
+                if (value.Coordinates.Latitude > 90.0 || value.Coordinates.Latitude < -90.0)
                 {
                     return BadRequest("Invalid latitude specified.");
                 }
@@ -57,19 +59,69 @@
             string postalCode = string.Empty;
             string city = string.Empty;
 
-            var client = new Google.Geocoding.Client.GeocodingClient()
-            {
-                ApiKey = ConfigurationManager.AppSettings["Google_ApiKey"],
-            };
+            var connectionString = ConfigurationManager.ConnectionStrings["SqlAzure"];
 
-            var lookup = await client.LookupAsync(coordinates.Latitude, coordinates.Longitude);
-
-            if (lookup != null)
+            if (connectionString != null && !string.IsNullOrEmpty(connectionString.ConnectionString))
             {
-                city = lookup.City;
-                country = lookup.CountryCode;
-                region = lookup.RegionCode;
-                postalCode = lookup.PostalCode;
+                using (var connection = new SqlConnection(connectionString.ConnectionString))
+                {
+                    await connection.OpenAsync();
+
+                    try
+                    {
+                        using (var command = connection.CreateCommand())
+                        {
+                            command.Parameters.Add(new SqlParameter("@lat", coordinates.Latitude));
+                            command.Parameters.Add(new SqlParameter("@long", coordinates.Longitude));
+
+                            command.CommandText = @"
+declare @g geography = geography::Point(@lat, @long, 4326)
+
+select top 1 [Iso2],
+             [PostalCode],
+             [PlaceName],
+             [StateCode]
+from [dbo].[tblGB]
+where [GeoLocation].STDistance(@g) is not null
+order by [GeoLocation].STDistance(@g);
+";
+
+                            using (var reader = await command.ExecuteReaderAsync())
+                            {
+                                while (await reader.ReadAsync())
+                                {
+                                    city = Convert.ToString(reader["PlaceName"], CultureInfo.InvariantCulture);
+                                    country = Convert.ToString(reader["Iso2"], CultureInfo.InvariantCulture);
+                                    postalCode = Convert.ToString(reader["PostalCode"], CultureInfo.InvariantCulture);
+                                    region = Convert.ToString(reader["StateCode"], CultureInfo.InvariantCulture);
+
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }
+            }
+            else
+            {
+                var client = new Google.Geocoding.Client.GeocodingClient()
+                {
+                    ApiKey = ConfigurationManager.AppSettings["Google_ApiKey"],
+                };
+
+                var lookup = await client.LookupAsync(coordinates.Latitude, coordinates.Longitude);
+
+                if (lookup != null)
+                {
+                    city = lookup.City;
+                    country = lookup.CountryCode;
+                    region = lookup.RegionCode;
+                    postalCode = lookup.PostalCode;
+                }
             }
 
             return new LocationReponse()
