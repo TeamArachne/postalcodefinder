@@ -261,6 +261,10 @@
       <Project>{9e5eefba-992b-422e-a919-1c7c2efcd63c}</Project>
       <Name>FreeGeoIP.Client</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\google.geocoding.client\Google.Geocoding.Client\Google.Geocoding.Client.csproj">
+      <Project>{c8125ed5-0828-4de2-bdd2-4824100b14de}</Project>
+      <Name>Google.Geocoding.Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\visitoriq.client\VisitorIQ.Client\VisitorIQ.Client.csproj">
       <Project>{f059c3b6-7505-491b-bfee-40daf56f7758}</Project>
       <Name>VisitorIQ.Client</Name>

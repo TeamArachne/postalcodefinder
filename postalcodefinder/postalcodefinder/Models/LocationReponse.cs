@@ -13,6 +13,9 @@ namespace postalcodefinder.Models
         [JsonProperty("postalCode")]
         public string PostalCode { get; set; }
 
+        [JsonProperty("city")]
+        public string City { get; set; }
+
         [JsonProperty("derivationMethod")]
         public string DerivationMethod { get; set; }
     }
