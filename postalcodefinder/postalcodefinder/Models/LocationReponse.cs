@@ -7,6 +7,9 @@ namespace postalcodefinder.Models
         [JsonProperty("country")]
         public string Country { get; set; }
 
+        [JsonProperty("region")]
+        public string Region { get; set; }
+
         [JsonProperty("postalCode")]
         public string PostalCode { get; set; }
 
