@@ -3,7 +3,7 @@ using System.Web.Mvc;
 
 namespace postalcodefinder
 {
-    public class FilterConfig
+    public static class FilterConfig
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {

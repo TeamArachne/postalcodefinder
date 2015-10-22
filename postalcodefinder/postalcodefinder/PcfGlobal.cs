@@ -8,8 +8,7 @@
 
         public static IPcfConfigurationSection Configuration
         {
-            get { return _config; }
-            internal set { _config = value ?? PcfConfigurationSection.GetSection(); }   // Ensure never null
+            get { return _config ?? new PcfConfigurationSection(); }
         }
     }
 }

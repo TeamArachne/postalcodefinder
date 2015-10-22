@@ -107,6 +107,11 @@ namespace postalcodefinder.Areas.HelpPage.ModelDescriptions
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Microsoft.Naming",
+            "CA2204:Literals should be spelled correctly",
+            MessageId = "ModelName",
+            Justification = "It is a type name.")]
         public ModelDescription GetOrCreateModelDescription(Type modelType)
         {
             if (modelType == null)
@@ -130,10 +135,11 @@ namespace postalcodefinder.Areas.HelpPage.ModelDescriptions
                         String.Format(
                             CultureInfo.CurrentCulture,
                             "A model description could not be created. Duplicate model name '{0}' was found for types '{1}' and '{2}'. " +
-                            "Use the [ModelName] attribute to change the model name for at least one of the types so that it has a unique name.",
+                            "Use the [{3}] attribute to change the model name for at least one of the types so that it has a unique name.",
                             modelName,
                             modelDescription.ModelType.FullName,
-                            modelType.FullName));
+                            modelType.FullName,
+                            "ModelName"));
                 }
 
                 return modelDescription;
