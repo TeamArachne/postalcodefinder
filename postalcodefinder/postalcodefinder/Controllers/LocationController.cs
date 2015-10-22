@@ -7,6 +7,7 @@
     using System.Threading.Tasks;
     using System.Web;
     using System.Web.Http;
+    using System.Web.Http.Cors;
     using FreeGeoIP.Client;
     using Models;
     using Newtonsoft.Json;
@@ -14,6 +15,7 @@
 
     public class LocationController : ApiController
     {
+        [EnableCors(origins: "*", headers: "*", methods: "POST")]
         public async Task<IHttpActionResult> Post([FromBody][Required]LocationRequest value)
         {
             if (value == null)

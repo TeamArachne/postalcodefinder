@@ -13,6 +13,7 @@ namespace postalcodefinder
 
             // Web API routes
             config.MapHttpAttributeRoutes();
+            config.EnableCors();
 
             var formatter = new JsonMediaTypeFormatter();
 
