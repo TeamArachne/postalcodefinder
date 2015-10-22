@@ -5,7 +5,7 @@ using postalcodefinder.Models;
 
 namespace postalcodefinder.Controllers
 {
-    public class ValuesController : ApiController
+    public class LocationController : ApiController
     {
         // POST api/values
         public IHttpActionResult Post([FromBody][Required]LocationRequest value)

@@ -11,14 +11,14 @@ using postalcodefinder.Controllers;
 namespace postalcodefinder.Tests.Controllers
 {
     [TestClass]
-    public class ValuesControllerTest
+    public class LocationControllerTests
     {
 
         [TestMethod]
         public void Post()
         {
             // Arrange
-            ValuesController controller = new ValuesController();
+            LocationController controller = new LocationController();
 
             // Act
             controller.Post(null);
