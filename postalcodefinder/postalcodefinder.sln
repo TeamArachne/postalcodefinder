@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "postalcodefinder", "postalcodefinder\postalcodefinder.csproj", "{5615564D-40E6-4279-AA56-EB7EA2920E9E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "postalcodefinder.Tests", "postalcodefinder.Tests\postalcodefinder.Tests.csproj", "{41FEB525-C5B5-4A58-8CDA-7CFBE558EF62}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8E184BEE-E317-49E3-BA57-5AFE240E8C79}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreeGeoIP.Client", "..\freegeoip.client\FreeGeoIP.Client\FreeGeoIP.Client.csproj", "{9E5EEFBA-992B-422E-A919-1C7C2EFCD63C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +25,10 @@ Global
 		{41FEB525-C5B5-4A58-8CDA-7CFBE558EF62}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{41FEB525-C5B5-4A58-8CDA-7CFBE558EF62}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{41FEB525-C5B5-4A58-8CDA-7CFBE558EF62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E5EEFBA-992B-422E-A919-1C7C2EFCD63C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E5EEFBA-992B-422E-A919-1C7C2EFCD63C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E5EEFBA-992B-422E-A919-1C7C2EFCD63C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E5EEFBA-992B-422E-A919-1C7C2EFCD63C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

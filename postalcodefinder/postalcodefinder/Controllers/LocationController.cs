@@ -2,15 +2,18 @@
 {
     using System;
     using System.ComponentModel.DataAnnotations;
+    using System.Configuration;
     using System.Net.Http;
+    using System.Threading.Tasks;
     using System.Web;
     using System.Web.Http;
+    using FreeGeoIP.Client;
     using Newtonsoft.Json;
     using postalcodefinder.Models;
 
     public class LocationController : ApiController
     {
-        public IHttpActionResult Post([FromBody][Required]LocationRequest value)
+        public async Task<IHttpActionResult> Post([FromBody][Required]LocationRequest value)
         {
             if (value == null)
             {
@@ -38,7 +41,7 @@
             }
             else
             {
-                response = LookupByIPAddress(Request);
+                response = await LookupByIPAddressAsync(Request);
             }
 
             return Ok(response);
@@ -68,7 +71,7 @@
             };
         }
 
-        private static LocationReponse LookupByIPAddress(HttpRequestMessage request)
+        private static async Task<LocationReponse> LookupByIPAddressAsync(HttpRequestMessage request)
         {
             object property;
             HttpContextBase httpContext;
@@ -90,7 +93,15 @@
 
             if (!string.IsNullOrEmpty(clientIPAddress))
             {
-                // TODO Lookup based on IP address
+                var client = new FreeGeoIPClient();
+                var location = await client.LookupAsync(clientIPAddress);
+
+                if (location != null)
+                {
+                    country = location.CountryCode;
+                    region = location.RegionCode;
+                    postalCode = location.PostalCode;
+                }
             }
 
             return new LocationReponse()
