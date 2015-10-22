@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Mvc;
 
 namespace postalcodefinder.Controllers
 {
@@ -22,8 +23,14 @@ namespace postalcodefinder.Controllers
         }
 
         // POST api/values
-        public void Post([FromBody]string value)
+        public object Post([FromBody]string value)
         {
+            return new
+            {
+                iso = "GB",
+                postalCode = "SW11",
+                method = "Coords"
+            };
         }
 
         // PUT api/values/5

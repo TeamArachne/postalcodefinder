@@ -17,17 +17,62 @@ textarea {
 }
 
 body .logo {
-height:50px;
-padding:5px;
+    height: 50px;
+    padding: 5px;
 }
 
 body .navbar-default .navbar-toggle:hover,
 .navbar-default .navbar-toggle:focus {
-  background-color: #efefef;
+    background-color: #efefef;
 }
+
 body .navbar-default {
-    background-color:#fff;
+    background-color: #fff;
 }
+
 body .jumbotron {
-    background-color:transparent;
+    background-color: transparent;
 }
+
+.polaroid-wrapper * {
+    box-sizing: border-box;
+}
+
+.polaroid-wrapper {
+    min-width: 200px;
+    display: inline-block;
+}
+
+    .polaroid-wrapper .polaroid {
+        width: 50%;
+        border: 2px solid black;
+        padding: 0.8em;
+        margin: 20px 25%;
+        min-width: 150px;
+    }
+
+        .polaroid-wrapper .polaroid.first {
+            transform: rotate(3deg);
+        }
+
+        .polaroid-wrapper .polaroid.second {
+            transform: rotate(-1deg);
+        }
+
+        .polaroid-wrapper .polaroid.third {
+            transform: rotate(-4deg);
+        }
+
+        .polaroid-wrapper .polaroid.fourth {
+            transform: rotate(5deg);
+        }
+
+    .polaroid-wrapper img {
+        width: 100%;
+    }
+
+    .polaroid-wrapper .name {
+        text-align: center;
+        margin-top: 7px;
+        font-family: OpenSansLight, Helvetica, Arial, sans-serif;
+    }
