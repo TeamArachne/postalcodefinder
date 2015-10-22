@@ -12,12 +12,12 @@
         private const string LoadDataOnAppStartAttributeName = "loadDataOnAppStart";
 
         [ConfigurationProperty(LoadDataOnAppStartAttributeName, IsRequired = false, DefaultValue = false)]
-        bool IPcfConfigurationSection.LoadDataOnAppStart
+        public bool LoadDataOnAppStart
         {
             get { return (bool)base[LoadDataOnAppStartAttributeName]; }
         }
 
-        IDictionary<string, ConnectionStringSettings> IPcfConfigurationSection.ConnectionStrings
+        public IDictionary<string, ConnectionStringSettings> ConnectionStrings
         {
             get
             {
@@ -27,6 +27,10 @@
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Microsoft.Design",
+            "CA1024:UsePropertiesWhereAppropriate",
+            Justification = "A property is not appropriate for loading a configuration section.")]
         public static PcfConfigurationSection GetSection()
         {
             PcfConfigurationSection section = ConfigurationManager.GetSection(SectionName) as PcfConfigurationSection;
